@@ -1,0 +1,57 @@
+{% load admin_list %}
+{% load i18n %}
+<p class="paginator">
+{% if pagination_required %}
+{% for i in page_range %}
+    {% paginator_number cl i %}
+{% endfor %}
+{% endif %}
+{{ cl.result_count }} 
+{% if cl.result_count == 1 or  cl.result_count == 0 %}
+
+        
+    {% if cl.opts.verbose_name == "sector"  %}
+    Sector
+{% elif cl.opts.verbose_name == "required_ documents" %}
+    Required Document
+{% elif cl.opts.verbose_name == "client" %}
+    Client
+{% elif cl.opts.verbose_name == "user" %}
+    User
+{% elif cl.opts.verbose_name == "client_ personal_ info" %}
+    Client Personal Info
+{% elif cl.opts.verbose_name == "client_ company_ info" %}
+    Client Company Info
+{% elif cl.opts.verbose_name == "subscription_ information" %}
+    Subscription Information
+{% else %}
+    {{ cl.opts.verbose_name }}
+{% endif %}
+    
+{% else %}
+   
+{% if cl.opts.verbose_name_plural == "sectors"  %}
+Sectors
+{% elif cl.opts.verbose_name_plural == "required_ documentss" %}
+Required Documents
+{% elif cl.opts.verbose_name_plural == "clienst" %}
+Clients
+{% elif cl.opts.verbose_name_plural == "users" %}
+Users
+{% elif cl.opts.verbose_name_plural == "client_ personal_ infos" %}
+Client Personal Info
+{% elif cl.opts.verbose_name_plural == "client_ company_ infos" %}
+Client Company Info
+{% elif cl.opts.verbose_name_plural == "subscription_ informations" %}
+Subscription Informations
+{% else %}
+{{ cl.opts.verbose_name_plural }}
+{% endif %}
+    
+
+
+    
+{% endif %}
+{% if show_all_url %}&nbsp;&nbsp;<a href="{{ show_all_url }}" class="showall">{% trans 'Show all' %}</a>{% endif %}
+{% if cl.formset and cl.result_count %}<input type="submit" name="_save" class="default" value="{% trans 'Save' %}">{% endif %}
+</p>

@@ -1,0 +1,29 @@
+{% extends "admin/base.html" %}
+
+{% block title %} 
+    {% if title == "Select sector to change" %}
+        Sectors 
+    {% elif title == "Select required_ documents to change" %} 
+        Required Documents 
+    {% elif title == "Select client to change" %}
+        Client
+    {% elif title == "Select user to change" %}
+        Users
+    {% elif title == "Change user" %}
+        User Details
+    {% elif title == "Select client_ personal_ info to change" %}
+        Client Personal Info
+    {% elif title == "Select client_ company_ info to change" %}
+        Client Company Info
+    {% elif title == "Select subscription_ information to change" %}
+        Subscription Information
+    {% else %}
+        {{ title }}
+    {% endif %} | {{ site_title|default:_('Django site admin') }}
+{% endblock %}
+
+{% block branding %}
+<h1 id="site-name"><a href="{% url 'admin:index' %}">{{ site_header|default:_('Django administration') }}</a></h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
