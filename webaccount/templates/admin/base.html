@@ -166,7 +166,7 @@
             </li>
             <li class="nav-item">
               <a class="nav-link" href="/admin/webaccount/required_documents/">
-                <i class="fas fa-file"></i> Required Documents
+                <i class="fas fa-file"></i> Required Document
               </a>
             </li>
             <li class="nav-item">
@@ -212,12 +212,21 @@
                 Sign In
               {% elif title == "Select sector to change" %}
               Sectors 
+              {% elif title == "Change user" %}
+                User Details
           {% elif title == "Select required_ documents to change" %} 
               Required Documents 
+            {% elif title == "Add required_ documents" %}
+              Add Required Document
+            {% elif title == "Add user" %}
+            Add User
+
+            {% elif title == "Change required_ documents" %}
+              Change Required Document
           {% elif title == "Select client to change" %}
               Client
               {% elif title == "Select user to change" %}
-              User
+              Users
               <script>
                 $(document).ready(function()
                 {
@@ -304,7 +313,12 @@
       
     });
   </script>
-
+  
+              <script>
+                {% if title == "Add user" %}
+                $(".errorlist").children("li:first-child").css("display", "none");
+                {% endif %}
+              </script>
 
 </body>
 

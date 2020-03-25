@@ -28,7 +28,7 @@
           <td>{{ request.user.email }}</td>
         </tr>
         <tr>
-          <td class="font-weight-bold">Active Account</td>
+          <td class="font-weight-bold">Status</td>
           <td>
             {% if request.user.is_active %}
               Active
@@ -38,7 +38,7 @@
           </td>
         </tr>
         <tr>
-          <td class="font-weight-bold">Admin</td>
+          <td class="font-weight-bold">Role</td>
           <td>            
             {% if request.user.is_superuser %}
               Admin

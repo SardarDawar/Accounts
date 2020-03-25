@@ -28,7 +28,7 @@ def index_view(request):
             try:
                 user = authenticate(username=request.POST['username'], password = request.POST['password'])
             except:
-                messages.error(request, "Credentials are invalid.")
+                messages.error(request, "Incorrect username or password.")
             if user is not None:
                 if user.is_active:
                     login(request, user)
@@ -42,6 +42,8 @@ def index_view(request):
                     messages.error(request, "Username is empty.")
                 elif request.POST['password'] == '':
                     messages.error(request, "Password is empty.")
+                else:
+                    messages.error(request, "Incorrect username or password.")
         return render(request, 'webaccount/login.html', {})
 
 # @login_required

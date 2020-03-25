@@ -58,7 +58,7 @@ class Client_Company_Info(models.Model):
 
 class Required_Documents(models.Model):
     Name    =   models.CharField(max_length=300 , unique=True)
-    file_type =   models.CharField(max_length=300,choices=types, unique=True)
+    file_type =   models.CharField(max_length=300,choices=types)
 
     def __str__(self):
         return self.Name

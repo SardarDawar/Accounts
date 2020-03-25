@@ -19,7 +19,7 @@ from django.conf import settings
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
 from django.shortcuts import render,redirect
-
+from django.contrib import messages
 UserModel = get_user_model()
 
 
@@ -100,18 +100,36 @@ class UserCreationForm(forms.ModelForm):
         if self._meta.model.USERNAME_FIELD in self.fields:
             self.fields[self._meta.model.USERNAME_FIELD].widget.attrs.update({'autofocus': True})
 
-    # def clean_password2(self):
-    #     password1 = self.cleaned_data.get("password1")
-    #     password2 = self.cleaned_data.get("password2")
-    #     if password1 and password2 and password1 != password2:
-    #         raise forms.ValidationError(
-    #             self.error_messages['password_mismatch'],
-    #             code='password_mismatch',
-    #         )
-    #     return password2
+    # def clean_username(self):
+    #     # password1 = self.cleaned_data.get("password1")
+    #     # password2 = self.cleaned_data.get("password2")
+    #     # if password1 and password2 and password1 != password2:
+    #     #     raise forms.ValidationError(
+    #     #         self.error_messages['password_mismatch'],
+    #     #         code='password_mismatch',
+    #     #     )
+    #     # return password2
+    #     if self.cleaned_data.get("username") == '':
+    #         raise forms.ValidationError("Username is empty")
+    #     return self.cleaned_data.get("username")
+
+    # def clean(self):
+    #     clean_data = self.cleaned_data
+    #     if clean_data.get("username") == '':
+    #         raise forms.ValidationError("Error")
+    #     return clean_data
+
+    # def clean_username(self):
+    #     data = self.cleaned_data.get("username")
+    #     if data is None:
+    #         forms.ValueError("sdjfnkjsdnfkjsdf")
+    #     return data
 
     def _post_clean(self):
         try:
+            # clean_data = self.cleaned_data
+            # if clean_data.get("username") == '':
+            #     raise forms.ValidationError("Error")
             super()._post_clean()
         except:
             return redirect("/auth/user/add/")
@@ -121,7 +139,33 @@ class UserCreationForm(forms.ModelForm):
         mail_subject = "Password Set Link"
         to_email = self.cleaned_data.get("email")
         message = self.cleaned_data.get("username")
-        # print(super().username)
+        # print("***********************")
+        # print(self.cleaned_data.get("username"))
+        # print("***********************")
+
+        if self.cleaned_data.get("username") is None and self.cleaned_data.get("email") is None:
+            # raise forms.ValidationError("saldkaslkdnaslkdnalksdn")
+            self.add_error("username", "Username is empty\n")
+            # self.username.error_messages("hkhbhjbjhbjhbjhbjhbjh")
+            self.add_error("email", "Email is empty  ")
+            return redirect("/auth/user/add/")
+
+
+        if self.cleaned_data.get("username") is None:
+            # raise forms.ValidationError("saldkaslkdnaslkdnalksdn")
+            self.add_error("username", "Username is empty")
+            return redirect("/auth/user/add/")
+
+        if self.cleaned_data.get("email") is None:
+            # raise forms.ValidationError("saldkaslkdnaslkdnalksdn")
+            self.add_error("email", "Email is empty")
+            return redirect("/auth/user/add/")
+        
+
+        
+        # clean_data = self.cleaned_data
+        # if clean_data.get("username") == '':
+        #     raise forms.ValidationError("Error")
         user=super().save()
         # print("*********" , user.username, "**********")
         # print("****************", user.pk,  "******************")
@@ -132,7 +176,7 @@ class UserCreationForm(forms.ModelForm):
         # user: user,
         token= default_token_generator.make_token(user)
         # print("**************", uid, token, "**************")
-        domain = "167.172.128.142:8000"
+        domain = "127.0.0.1:8000"
         protocol = "http"
         
         message = render_to_string('webaccount/password_set_user.html', {
@@ -145,6 +189,8 @@ class UserCreationForm(forms.ModelForm):
         email = EmailMessage(mail_subject, message, to=[to_email])
         email.send()
         password = self.cleaned_data.get('password2')
+        # if self.cleaned_data.get("username") == "":
+        #     forms.ValidationError("sdkfsdknfsdnf")
         if password:
             try:
                 password_validation.validate_password(password, self.instance)
@@ -152,9 +198,15 @@ class UserCreationForm(forms.ModelForm):
                 self.add_error('password2', error)
 
     def save(self, commit=True):
+        # if self.clean_data.get("username"):
+        #     raise forms.ValidationError("aslldknaslkdnaslkd")
         user = super().save(commit=False)
+        # print(self.cleaned_data)
         if self.cleaned_data.get("password1"):
             user.set_password(self.cleaned_data["password1"])
+        # if self.cleaned_data.get("username") == "":
+        #     forms.ValidationError("sdkfsdknfsdnf")
+        
         if commit:
             # mail_subject = "Password Set Link"
             # to_email = self.user.email
@@ -173,13 +225,14 @@ class UserCreationForm(forms.ModelForm):
 
 
 class UserChangeForm(forms.ModelForm):
-    password = ReadOnlyPasswordHashField(
-        label=_("Password"),
-        help_text=_(
-            "Raw passwords are not stored, so there is no way to see this "
-            "user's password."
-        ),
-    )
+    # password = ReadOnlyPasswordHashField(
+    #     label=_("Password"),
+    #     help_text=_(
+    #         "Raw passwords are not stored, so there is no way to see this "
+    #         "user's password."
+    #     ),
+        
+    # )
 
     class Meta:
         model = User
