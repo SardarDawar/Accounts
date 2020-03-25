@@ -176,7 +176,7 @@ class UserCreationForm(forms.ModelForm):
         # user: user,
         token= default_token_generator.make_token(user)
         # print("**************", uid, token, "**************")
-        domain = "127.0.0.1:8000"
+        domain = "167.172.128.142:8000"
         protocol = "http"
         
         message = render_to_string('webaccount/password_set_user.html', {
